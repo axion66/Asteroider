@@ -1,0 +1,11 @@
+comment: Points are in (x, y), i.e. (col, row), order.
+plumes:
+  comment: Intervals in radians
+  intervals:
+  - [1.1543492991046722, 1.4139731342544215]
+  user: wkiri
+points:
+- [347.98985769693354, 393.212952326896]
+- [284.7531249414365, 478.11501845917417]
+- [361.1690406367825, 670.0454545454543]
+user: wkiri
