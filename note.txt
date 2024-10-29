@@ -13,9 +13,23 @@ https://pds-imaging.jpl.nasa.gov/solr/pds_archives/search?identifier=
 some obs:
     starting with cassini_n : remove _1_label.yml, and wrap the title w/ * * after identifier=
     https://pds-imaging.jpl.nasa.gov/solr/pds_archives/search?identifier=
+    
 
+    # gallio_specific 
+    
+    from tag : {2900r_label.yml  G2C0004}
 
-    for all gallio: remove _label and wrap it w/ * * .
+    replace q={here} w/ E6G0020
+    https://pds-imaging.jpl.nasa.gov/
+    search/?fq=-ATLAS_THUMBNAIL_URL%3Abrwsnotavail.jpg&q=E6G0020
+    
+    get thumbnail displayed on the page:
+    https://pds-imaging.jpl.nasa.gov///data/galileo/galileo_orbiter
+    /go_0018/extras/thumbnail/e6/ganymede/c038388/1500r.jpeg
+
+    and replace /thumbnail/ w/ /browse/
+    
+
 
     for messangers: if "Eblahblah_label", "Blahal" and wrap it w/ * *.
 
