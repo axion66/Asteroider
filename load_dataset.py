@@ -2,7 +2,7 @@ import os
 import requests
 import json
 from bs4 import BeautifulSoup
-
+from pprint import pprint
 
 def process_yml_files(path):
 
@@ -50,13 +50,13 @@ def save_images(label_info: str, img_path: str):
          label_info = label_info.removesuffix("_label")
     
 
-
-    url = requests.get(f"https://pds-imaging.jpl.nasa.gov/solr/pds_archives/search?identifier=*{label_info}*")
+    link = f"https://pds-imaging.jpl.nasa.gov/solr/pds_archives/search?identifier=*{label_info}*"
+    url = requests.get(link)
 
     url_load = BeautifulSoup(url.text,'html.parser')
 
     url_load_json = json.loads(url_load.text)
-
+    pprint(url_load_json)
     image_s = url_load_json['response']['docs'][0]['ATLAS_BROWSE_URL']
 
 
@@ -66,5 +66,5 @@ def save_images(label_info: str, img_path: str):
         with open(img_path, "wb") as file:
                 file.write(response.content)
     else:
-        print(f"got {response.status_code} for {img_path}")
+        print(f"got {response.status_code} with {response} for {img_path} for {link}")
     return response
