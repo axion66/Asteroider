@@ -138,7 +138,7 @@ def save_images(label_info: str, img_path: str):
 
     url_load_json = json.loads(url_load.text)
     image_s = url_load_json['response']['docs'][0]['ATLAS_BROWSE_URL']
-
+    
 
 
     response = requests.get(image_s)
