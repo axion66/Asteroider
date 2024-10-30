@@ -113,57 +113,78 @@ def save_images(label_info: str, img_path: str):
     # example label_info input: lor_0034583522_0x630_sci.yml
     # galileo_specific
     if label_info in galileo_images.keys():
-        label_info = galileo_images[label_info]
-        link = f"https://pds-imaging.jpl.nasa.gov/search/?fq=-ATLAS_THUMBNAIL_URL%3Abrwsnotavail.jpg&q={label_info}"
-        url = requests.get(link)
-        url_load = BeautifulSoup(url.text,'html.parser')
-        pprint(url_load)
-        url_load_json = json.loads(url_load.text)
-        pprint(url_load_json)
-        return
-        image_s = url_load_json['response']['docs'][0]['ATLAS_BROWSE_URL']
+        return None
+    #precondition & process
+    if label_info.endswith(".yml"): # all
+        label_info = label_info.removesuffix(".yml")
+
+    if label_info.startswith("E"): # messangers 
+        label_info = label_info.removeprefix("E")
+
+    if label_info.endswith("_1_label"): # cassini
+        label_info = label_info.removesuffix("_1_label")
+
+    if label_info.endswith("_label"): # all
+        label_info = label_info.removesuffix("_label")
+    
+
+    
+
+
+    link = f"https://pds-imaging.jpl.nasa.gov/solr/pds_archives/search?identifier=*{label_info}*"
+    url = requests.get(link)
+
+    url_load = BeautifulSoup(url.text,'html.parser')
+
+    url_load_json = json.loads(url_load.text)
+    image_s = url_load_json['response']['docs'][0]['ATLAS_BROWSE_URL']
 
 
 
-        response = requests.get(image_s)
-        if response.status_code == 200:
-            with open(img_path, "wb") as file:
-                    file.write(response.content)
-        else:
-            print(f"got {response.status_code} with {response} for {img_path} for {link}")
+    response = requests.get(image_s)
+    if response.status_code == 200:
+        with open(img_path, "wb") as file:
+                file.write(response.content)
     else:
-        #precondition & process
-        if label_info.endswith(".yml"): # all
-            label_info = label_info.removesuffix(".yml")
-
-        if label_info.startswith("E"): # messangers 
-            label_info = label_info.removeprefix("E")
-
-        if label_info.endswith("_1__label"): # cassini
-            label_info = label_info.removesuffix("_1__label")
-
-        if label_info.endswith("_label"): # all
-            label_info = label_info.removesuffix("_label")
-        
-
-        
-
-
-        link = f"https://pds-imaging.jpl.nasa.gov/solr/pds_archives/search?identifier=*{label_info}*"
-        url = requests.get(link)
-
-        url_load = BeautifulSoup(url.text,'html.parser')
-
-        url_load_json = json.loads(url_load.text)
-        pprint(url_load_json)
-        image_s = url_load_json['response']['docs'][0]['ATLAS_BROWSE_URL']
-
-
-
-        response = requests.get(image_s)
-        if response.status_code == 200:
-            with open(img_path, "wb") as file:
-                    file.write(response.content)
-        else:
-            print(f"got {response.status_code} with {response} for {img_path} for {link}")
+        print(f"got {response.status_code} with {response} for {img_path} for {link}")
     return response
+
+
+
+
+
+
+
+
+#galileo specific
+def find_and_transform_url(label_info, label_info_2):
+    search_url = f"https://pds-imaging.jpl.nasa.gov/search/?fq=-ATLAS_THUMBNAIL_URL%3Abrwsnotavail.jpg&q={label_info}"
+    
+    try:
+        response = requests.get(search_url)
+        response.raise_for_status() 
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        image_urls = []
+        for tag in soup.find_all(['a', 'img', 'link']):  
+            href = tag.get('href') or tag.get('src')
+            if href and '/thumbnail/' in href and f'{label_info_2}.jpeg' in href:
+                image_urls.append(href)
+        
+        if not image_urls or len(image_urls) > 1:
+            print(f"No matching URLs found for label_info: {label_info} in {image_urls}")
+            return None
+        
+        url = image_urls[0]
+        
+        url = url.replace('/thumbnail/', '/browse/')
+        
+        return url
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Error making request: {e}")
+        return None, None
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return None, None
+

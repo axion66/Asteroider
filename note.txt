@@ -9,7 +9,6 @@ https://pds-imaging.jpl.nasa.gov/search/?fq=-ATLAS_THUMBNAIL_URL%3Abrwsnotavail.
 
 https://pds-imaging.jpl.nasa.gov/solr/pds_archives/search?identifier=
 
-
 some obs:
     starting with cassini_n : remove _1_label.yml, and wrap the title w/ * * after identifier=
     https://pds-imaging.jpl.nasa.gov/solr/pds_archives/search?identifier=
@@ -20,17 +19,17 @@ some obs:
     from tag : {2900r_label.yml  G2C0004}
 
     replace q={here} w/ E6G0020
-    https://pds-imaging.jpl.nasa.gov/
-    search/?fq=-ATLAS_THUMBNAIL_URL%3Abrwsnotavail.jpg&q=E6G0020
-    
-    get thumbnail displayed on the page:
-    https://pds-imaging.jpl.nasa.gov///data/galileo/galileo_orbiter
-    /go_0018/extras/thumbnail/e6/ganymede/c038388/1500r.jpeg
 
+    this is original url with input label_info:
+    https://pds-imaging.jpl.nasa.gov/search/?fq=-ATLAS_THUMBNAIL_URL%3Abrwsnotavail.jpg&q={label_info}
+    
+    You can find a image url like this where it contains label_info_2:
+    https://pds-imaging.jpl.nasa.gov///data/galileo/galileo_orbiter/go_0018/extras/thumbnail/e6/ganymede/c038388/{label_info_2}.jpeg
+
+    After finding the url, replace /thumbnail/ -> with /broswe/
     and replace /thumbnail/ w/ /browse/
     
 
 
-    for messangers: if "Eblahblah_label", "Blahal" and wrap it w/ * *.
 
     last one: remove _label only
