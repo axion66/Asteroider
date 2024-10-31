@@ -237,8 +237,8 @@ def only_plumes(path='plume(nasa)',destiny_folder='../dataset/filtered_plumes/')
                     destination_yml = os.path.join(destiny_folder, f"{index}.yml")
                     destination_img = os.path.join(destiny_folder, f"{index}.jpg")
                     
-                    with open(destination_yml, 'w') as new_yml_file:
-                        yaml.dump(yml_data, new_yml_file)
+                    #with open(destination_yml, 'w') as new_yml_file:
+                        #yaml.dump(yml_data, new_yml_file)
                     
                     with open(img_path, 'rb') as img_file:
                         with open(destination_img, 'wb') as new_img_file:
