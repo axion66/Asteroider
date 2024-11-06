@@ -2,7 +2,7 @@ requests
 beautifulsoup4
 torchvision
 ultralytics
+einops
 mamba
 roboflow
 causal-conv1d>=1.4.0
-

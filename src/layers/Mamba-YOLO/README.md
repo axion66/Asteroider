@@ -25,6 +25,8 @@ CUDA_VISIBLE_DEVICES="0" python mbyolo_train.py --task train --data ultralytics/
  --config ultralytics/cfg/models/mamba-yolo/Mamba-YOLO-B.yaml \
 --amp  --project ./output_dir/mscoco --name mambayolo_n
 
+run apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+for ffmpeg
 ```
 
 ## Acknowledgement
