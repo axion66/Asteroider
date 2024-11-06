@@ -21,7 +21,7 @@ pip install -v -e .
 ## Training
 
 ```shell
-CUDA_VISIBLE_DEVICES="cuda:0" python mbyolo_train.py --task train --data ultralytics/cfg/datasets/coco.yaml \
+CUDA_VISIBLE_DEVICES="0" python mbyolo_train.py --task train --data ultralytics/cfg/datasets/coco.yaml \
  --config ultralytics/cfg/models/mamba-yolo/Mamba-YOLO-B.yaml \
 --amp  --project ./output_dir/mscoco --name mambayolo_n
 
