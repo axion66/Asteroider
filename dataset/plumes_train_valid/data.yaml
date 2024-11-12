@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['plumes']
+
+roboflow:
+  workspace: pranav-sambhu-nxvg9
+  project: plumes-wyzmu
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/pranav-sambhu-nxvg9/plumes-wyzmu/dataset/1
