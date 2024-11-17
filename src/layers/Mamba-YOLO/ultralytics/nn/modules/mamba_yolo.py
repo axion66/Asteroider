@@ -218,7 +218,6 @@ class LSBlock(nn.Module):
     def __init__(self, in_features, hidden_features=None, act_layer=nn.GELU, drop=0):
         super().__init__()
         self.fc1 = nn.Conv2d(in_features, hidden_features, kernel_size=3, padding=3 // 2, groups=hidden_features)
-        self.norm = nn.BatchNorm2d(hidden_features)
         self.fc2 = nn.Conv2d(hidden_features, hidden_features, kernel_size=1, padding=0)
         self.act = act_layer()
         self.fc3 = nn.Conv2d(hidden_features, in_features, kernel_size=1, padding=0)
@@ -227,7 +226,7 @@ class LSBlock(nn.Module):
     def forward(self, x):
         input = x
         x = self.fc1(x)
-        x = self.norm(x)
+        x = self.act(x)
         x = self.fc2(x)
         x = self.act(x)
         x = self.fc3(x)
@@ -290,6 +289,7 @@ class XSSBlock(nn.Module):
             mlp_hidden_dim = int(hidden_dim * mlp_ratio)
             self.mlp = RGBlock(in_features=hidden_dim, hidden_features=mlp_hidden_dim, act_layer=mlp_act_layer,
                                drop=mlp_drop_rate)
+        self.norm3 = norm_layer(hidden_dim)
 
     def forward(self, input):
         input = self.in_proj(input)
@@ -299,7 +299,7 @@ class XSSBlock(nn.Module):
         # ===================
         if self.mlp_branch:
             input = input + self.drop_path(self.mlp(self.norm2(input)))
-        return input
+        return self.norm3(input)
 
 
 class VSSBlock(nn.Module):
@@ -338,7 +338,6 @@ class VSSBlock(nn.Module):
         # proj
         self.proj_conv = nn.Sequential(
             nn.Conv2d(in_channels, hidden_dim, kernel_size=1, stride=1, padding=0, bias=True),
-            nn.BatchNorm2d(hidden_dim),
             nn.SiLU()
         )
 
@@ -391,10 +390,8 @@ class SimpleStem(nn.Module):
         self.hidden_dims = embed_dim // 2
         self.conv = nn.Sequential(
             nn.Conv2d(inp, self.hidden_dims, kernel_size=ks, stride=2, padding=autopad(ks, d=1), bias=False),
-            nn.BatchNorm2d(self.hidden_dims),
             nn.GELU(),
             nn.Conv2d(self.hidden_dims, embed_dim, kernel_size=ks, stride=2, padding=autopad(ks, d=1), bias=False),
-            nn.BatchNorm2d(embed_dim),
             nn.SiLU(),
         )
 
@@ -409,7 +406,6 @@ class VisionClueMerge(nn.Module):
 
         self.pw_linear = nn.Sequential(
             nn.Conv2d(self.hidden, out_dim, kernel_size=1, stride=1, padding=0),
-            nn.BatchNorm2d(out_dim),
             nn.SiLU()
         )
 
