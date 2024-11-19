@@ -19,7 +19,7 @@ def parse_opt():
     parser.add_argument('--epochs', type=int, default=150)
     parser.add_argument('--optimizer', default='auto', help='SGD, Adam, AdamW')# SGD
     parser.add_argument('--amp', action='store_true', help='open amp')
-    parser.add_argument('--project', default='/output_dir/', help='save to project/name')
+    parser.add_argument('--project', default='output_dir/', help='save to project/name')
     parser.add_argument('--name', default='mambayolo', help='save to project/name')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     parser.add_argument('--dnn', action='store_true', help='use OpenCV DNN for ONNX inference')
@@ -49,7 +49,9 @@ if __name__ == '__main__':
         "lrf":0.001,
         "degrees":170,
         "augment":True,
-        'save_period': 1 # save model at every epoch. 
+        'save_period': 1, # save model at every epoch. 
+        "project": "mambayolo",
+        "name": "11/19",
         
     }
     model_conf = ROOT + opt.config # this is for .yml file
