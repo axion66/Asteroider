@@ -2,8 +2,8 @@ from ultralytics import YOLO
 import argparse
 import os
 
+# Set Cuda device as cuda:0. (one gpu)
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'  
-
 ROOT = os.path.abspath('.') + "/"
 
 
@@ -16,7 +16,7 @@ def parse_opt():
     parser.add_argument('--task', default='train', help='train, val, test, speed or study')
     parser.add_argument('--device', default='0', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     parser.add_argument('--workers', type=int, default=4, help='max dataloader workers (per RANK in DDP mode)')
-    parser.add_argument('--epochs', type=int, default=30)
+    parser.add_argument('--epochs', type=int, default=150)
     parser.add_argument('--optimizer', default='auto', help='SGD, Adam, AdamW')# SGD
     parser.add_argument('--amp', action='store_true', help='open amp')
     parser.add_argument('--project', default='/output_dir/', help='save to project/name')
@@ -30,6 +30,7 @@ def parse_opt():
 if __name__ == '__main__':
     opt = parse_opt()
     task = opt.task
+    # Custom arguments for training
     args = {
         "data": ROOT + opt.data,
         "epochs": 300,
@@ -48,6 +49,7 @@ if __name__ == '__main__':
         "lrf":0.001,
         "degrees":170,
         "augment":True,
+        'save_period': 1 # save model at every epoch. 
         
     }
     model_conf = ROOT + opt.config # this is for .yml file
